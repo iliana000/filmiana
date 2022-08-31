@@ -1,4 +1,8 @@
-let films = [
+import { filmType } from '../types/films'
+import {Request, Response} from 'express'
+
+
+let films: filmType[] = [
         {
             id: 1,
             url: 'google.com',
@@ -22,11 +26,11 @@ let films = [
         },
     ]
 
-export const getAll = (req, res) => {
+export const getAll = (req: Request, res: Response) => {
     res.status(200).json(films)
 }
 
-export const create = (req, res) => {
+export const create = (req: Request, res: Response) => {
     const newFilm = {
         id: Date.now().toString(),
         ...req.body
@@ -35,8 +39,7 @@ export const create = (req, res) => {
     res.status(201).json(films)
 }
 
-export const remove = (req, res) => {
-    films = films.filter(f => f.id !==req.params.id)
-    films.push(newFilm)
+export const remove = (req: Request, res: Response) => {
+    films = films.filter(f => f.id.toString() !== req.params.id)
     res.status(200).json({message: 'Removed succesfully'})
 }
