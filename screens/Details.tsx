@@ -4,7 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState, useLayoutEffect } from 'react';
 
 type RootStackParamList = {
-  Home: { list: Array<{ itemId: number, title: string }> };
+  Home?: { list: Array<{ itemId: number, title: string }> };
   Details: { itemId: number };
 };
 
