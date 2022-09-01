@@ -1,4 +1,5 @@
-import {Router} from 'express'
+import { Router } from 'express'
+
 import { getAll, create, remove } from '../controllers/films.js'
 
 const router = Router()
