@@ -8,7 +8,7 @@ const sagaMiddleware = createSagaMiddleware()
 
 export const store = configureStore({
   reducer: {
-    filters: filmsReducer,
+    films: filmsReducer,
   },
   middleware: [sagaMiddleware],
 })

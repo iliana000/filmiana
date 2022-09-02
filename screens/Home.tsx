@@ -1,9 +1,10 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useEffect } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { fetchFilms } from '../features/films/filmsSlice'
+import { filmType } from '../types/films'
 
 type RootStackParamList = {
   Home: { list: { itemId: number; title: string }[] }
@@ -17,7 +18,8 @@ export function HomeScreen({ route, navigation }: HomeProps) {
 
   useEffect(() => {
     dispatch(fetchFilms())
-  })
+  }, [])
+  const filmsList: filmType[] = useSelector(state => state.films?.list)
 
   return (
     <View style={styles.container}>
@@ -25,6 +27,9 @@ export function HomeScreen({ route, navigation }: HomeProps) {
       {/* <StatusBar style="auto" /> */}
       {route.params.list.map(film => (
         <Text key={film.itemId}>{film.title}</Text>
+      ))}
+      {filmsList?.map(film => (
+        <Text key={film.id}>{film.title}</Text>
       ))}
       <Button
         title="Go to Details"

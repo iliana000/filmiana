@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 
 import { filmType } from '../types/films'
 
+// TODO: move to Mongo DB
 let films: filmType[] = [
   {
     id: 1,

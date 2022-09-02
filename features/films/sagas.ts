@@ -2,18 +2,19 @@ import { useQuery } from 'react-query'
 import { call, put, takeLatest } from 'redux-saga/effects'
 
 import { filmType } from '../../types/films'
+import { filmsLoaded } from './filmsSlice'
 
 async function fetchFilms() {
-  console.log(1)
-
   const query = await fetch('http://localhost:3000/api/films')
     .then(res => res.json())
     .catch(e => console.log(e))
 
-  // const query = useQuery('repoData', await() =>
-  //   fetch('http://localhost:3000/api/films').then(res => res.json()),
+  // TODO: try to use react-query
+  // const query = useQuery('films', () =>
+  //   fetch('http://localhost:3000/api/films')
+  //     .then(res => res.json())
+  //     .catch(e => console.log(e)),
   // )
-  console.log(query)
 
   // const query = useQuery('films', async () => {
   //   console.log(2)
@@ -31,7 +32,7 @@ async function fetchFilms() {
 function* fetchFilmsSaga() {
   try {
     const films: filmType = yield call(fetchFilms)
-    yield put({ type: 'films/fetchFilms/succeed', films })
+    yield put(filmsLoaded(films))
   } catch (e) {
     let message
     if (e instanceof Error) message = e.message
