@@ -30,7 +30,10 @@ let films: filmType[] = [
 ]
 
 export const getAll = (req: Request, res: Response) => {
-  res.status(200).json(films)
+  res
+    .set('Access-Control-Allow-Origin', 'http://localhost:19006') //TODO: move to config
+    .status(200)
+    .json(films)
 }
 
 export const create = (req: Request, res: Response) => {

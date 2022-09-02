@@ -1,9 +1,15 @@
-import { StyleSheet, Button, Image } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { HomeScreen } from './screens/Home';
-import { DetailsScreen } from './screens/Details';
+import { NavigationContainer } from '@react-navigation/native'
+import {
+  createNativeStackNavigator,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack'
+import { StyleSheet, Button, Image } from 'react-native'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { Provider } from 'react-redux'
 
+import { DetailsScreen } from './screens/Details'
+import { HomeScreen } from './screens/Home'
+import { store } from './store'
 
 function LogoTitle() {
   return (
@@ -11,42 +17,51 @@ function LogoTitle() {
       style={{ width: 50, height: 50 }}
       source={require('./assets/icon.png')}
     />
-  );
+  )
 }
+
+const queryClient = new QueryClient()
 
 const Stack = createNativeStackNavigator()
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home" screenOptions={{
-        headerStyle: {
-          backgroundColor: '#f4511e',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            title: 'List',
-            headerTitle: () => <LogoTitle />,
-            headerRight: () => (
-              <Button
-                onPress={() => alert('This is a button!')}
-                title="Info"
-                color="#000"
-              />
-            ),
-          }} 
-          initialParams={{ list: [{ itemId: 42, title: "First film" }] }}
-        />
-        <Stack.Screen name="Details" component={DetailsScreen}/>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: '#f4511e',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          >
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{
+                title: 'List',
+                headerTitle: () => <LogoTitle />,
+                headerRight: () => (
+                  <Button
+                    onPress={() => alert('This is a button!')}
+                    title="Info"
+                    color="#000"
+                  />
+                ),
+              }}
+              initialParams={{ list: [{ itemId: 42, title: 'First film' }] }}
+            />
+            <Stack.Screen name="Details" component={DetailsScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </QueryClientProvider>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -56,4 +71,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+})
