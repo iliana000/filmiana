@@ -1,46 +1,54 @@
-import { useQuery } from 'react-query'
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 
 import { filmType } from '../../types/films'
-import { filmsLoaded } from './filmsSlice'
+import {
+  getFilms,
+  filmsLoaded,
+  addFilm,
+  filmAdded,
+  removeFilm,
+  filmRemoved,
+  filmsError,
+} from './filmsSlice'
+import { fetchAddFilm, fetchFilms, fetchRemoveFilm } from './requests'
 
-async function fetchFilms() {
-  const query = await fetch('http://localhost:3000/api/films')
-    .then(res => res.json())
-    .catch(e => console.log(e))
-
-  // TODO: try to use react-query
-  // const query = useQuery('films', () =>
-  //   fetch('http://localhost:3000/api/films')
-  //     .then(res => res.json())
-  //     .catch(e => console.log(e)),
-  // )
-
-  // const query = useQuery('films', async () => {
-  //   console.log(2)
-
-  //   const response = await fetch('http://localhost:3000/api/films')
-  //   if (!response.ok) {
-  //     throw new Error('Network response was not ok')
-  //   }
-  //   return response.json()
-  // })
-  return query
+function* handleError(e: any) {
+  let message
+  if (e instanceof Error) message = e.message
+  else message = String(e)
+  yield put(filmsError(message))
 }
 
-// worker Saga: will be fired on USER_FETCH_REQUESTED actions
+/* sagas */
 function* fetchFilmsSaga() {
   try {
     const films: filmType = yield call(fetchFilms)
     yield put(filmsLoaded(films))
   } catch (e) {
-    let message
-    if (e instanceof Error) message = e.message
-    else message = String(e)
-    yield put({ type: 'films/fetchFilms/error', message })
+    handleError(e)
+  }
+}
+
+function* addFilmSaga({ payload }: { type: string; payload: filmType }) {
+  try {
+    yield call(fetchAddFilm, payload)
+    yield put(filmAdded(payload))
+  } catch (e) {
+    handleError(e)
+  }
+}
+
+function* removeFilmSaga({ payload }: { type: string; payload: number }) {
+  try {
+    yield call(fetchRemoveFilm, payload)
+    yield put(filmRemoved(payload))
+  } catch (e) {
+    handleError(e)
   }
 }
 
 export function* sagaWatcher() {
-  yield takeLatest('films/fetchFilms', fetchFilmsSaga)
+  yield takeLatest(getFilms.type, fetchFilmsSaga)
+  yield takeEvery(addFilm.type, addFilmSaga)
+  yield takeEvery(removeFilm.type, removeFilmSaga)
 }

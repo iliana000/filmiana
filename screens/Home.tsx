@@ -1,15 +1,18 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useEffect } from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  StatusBar,
+  FlatList,
+} from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchFilms } from '../features/films/filmsSlice'
-import { filmType } from '../types/films'
-
-type RootStackParamList = {
-  Home: { list: { itemId: number; title: string }[] }
-  Details: { itemId: number }
-}
+import { getFilms, removeFilm } from '../features/films/filmsSlice'
+import { RootState } from '../store'
+import { filmType, RootStackParamList } from '../types/films'
 
 type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>
 
@@ -17,24 +20,50 @@ export function HomeScreen({ route, navigation }: HomeProps) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchFilms())
+    dispatch(getFilms())
   }, [])
-  const filmsList: filmType[] = useSelector(state => state.films?.list)
+  const filmsList: filmType[] = useSelector(
+    (state: RootState) => state.films?.list,
+  )
 
   return (
     <View style={styles.container}>
-      <Text>App for managing family films</Text>
-      {/* <StatusBar style="auto" /> */}
-      {route.params.list.map(film => (
-        <Text key={film.itemId}>{film.title}</Text>
-      ))}
-      {filmsList?.map(film => (
-        <Text key={film.id}>{film.title}</Text>
-      ))}
+      <StatusBar />
+      <Text style={styles.header}>App for managing family films</Text>
+      {filmsList.length && (
+        <FlatList
+          data={filmsList}
+          style={styles.list}
+          renderItem={({ item }) => (
+            <View style={styles.film}>
+              <Text>{item.title}</Text>
+              <Button
+                color="#8bf"
+                title="Details"
+                onPress={() =>
+                  navigation.push('Details', {
+                    id: item.id,
+                    initialTitle: item.title,
+                  })
+                }
+              />
+              <Button
+                color="#fa8"
+                title="Delete"
+                onPress={() => dispatch(removeFilm(item.id))}
+              />
+            </View>
+          )}
+          keyExtractor={item => String(item.id)}
+        />
+      )}
       <Button
-        title="Go to Details"
+        title="Add new"
         onPress={() =>
-          navigation.push('Details', { itemId: Math.floor(Math.random() * 10) })
+          navigation.push('Details', {
+            id: Math.floor(Math.random() * 10) + filmsList.length,
+            initialTitle: '',
+          })
         }
       />
     </View>
@@ -47,5 +76,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  header: {
+    fontSize: 30,
+    padding: 30,
+  },
+  list: {
+    flexGrow: 0.5,
+  },
+  film: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: 300,
+    padding: 10,
+    borderBottomColor: '#eee',
+    borderBottomWidth: 1,
   },
 })

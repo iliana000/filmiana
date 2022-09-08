@@ -54,7 +54,7 @@ export default function App() {
                   />
                 ),
               }}
-              initialParams={{ list: [{ itemId: 42, title: 'First film' }] }}
+              // initialParams={{ list: [{ itemId: 42, title: 'First film' }] }}
             />
             <Stack.Screen name="Details" component={DetailsScreen} />
           </Stack.Navigator>
