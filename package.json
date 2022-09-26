@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "server": "nodemon index.ts"
+    "server": "nodemon server/index.ts"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.11",

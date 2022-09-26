@@ -1,6 +1,6 @@
 import { createAction, createSlice, isAnyOf } from '@reduxjs/toolkit'
 
-import { filmType } from '../../types/films'
+import { filmType } from '../../../types/films'
 
 export const getFilms = createAction('films/getFilms')
 export const addFilm = createAction<filmType>('films/addFilm')

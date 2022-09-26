@@ -1,6 +1,6 @@
 // import { useQuery } from 'react-query'
 
-import { filmType } from '../../types/films'
+import { filmType } from '../../../types/films'
 
 export async function fetchFilms() {
   const query = await fetch('http://localhost:3000/api/films')

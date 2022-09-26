@@ -1,6 +1,6 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 
-import { filmType } from '../../types/films'
+import { filmType } from '../../../types/films'
 import {
   getFilms,
   filmsLoaded,

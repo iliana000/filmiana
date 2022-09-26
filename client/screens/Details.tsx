@@ -4,14 +4,17 @@ import { useState, useLayoutEffect } from 'react'
 import { StyleSheet, Text, View, Button, TextInput, Image } from 'react-native'
 import { useDispatch } from 'react-redux'
 
+import { RootStackParamList } from '../../types/films'
 import { addFilm } from '../features/films/filmsSlice'
-import { RootStackParamList } from '../types/films'
 
 type DetailsProps = NativeStackScreenProps<RootStackParamList, 'Details'>
 
-export function DetailsScreen({ route, navigation }: DetailsProps) {
+export function DetailsScreen({
+  route,
+  navigation,
+}: DetailsProps): React.ReactElement {
   const { id, initialTitle } = route.params
-  const [title, setTitle] = useState(initialTitle)
+  const [title, setTitle] = useState<string>(initialTitle)
   const dispatch = useDispatch()
 
   useLayoutEffect(() => {

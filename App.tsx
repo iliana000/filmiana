@@ -7,9 +7,9 @@ import { StyleSheet, Button, Image } from 'react-native'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 
-import { DetailsScreen } from './screens/Details'
-import { HomeScreen } from './screens/Home'
-import { store } from './store'
+import { DetailsScreen } from './client/screens/Details'
+import { HomeScreen } from './client/screens/Home'
+import { store } from './client/store'
 
 function LogoTitle() {
   return (

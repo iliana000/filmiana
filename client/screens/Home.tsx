@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import {
   StyleSheet,
   Text,
@@ -10,13 +10,13 @@ import {
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { filmType, RootStackParamList } from '../../types/films'
 import { getFilms, removeFilm } from '../features/films/filmsSlice'
 import { RootState } from '../store'
-import { filmType, RootStackParamList } from '../types/films'
 
 type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>
 
-export function HomeScreen({ route, navigation }: HomeProps) {
+export const HomeScreen: React.FC<HomeProps> = ({ route, navigation }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
