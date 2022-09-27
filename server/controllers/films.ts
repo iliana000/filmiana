@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { filmType } from '../../types/films'
 
 // TODO: move to Mongo DB
+export const tags: string[] = ['Tim', 'iliana', 'Family']
 export let films: filmType[] = [
   {
     id: 1,
