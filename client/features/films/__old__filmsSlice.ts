@@ -4,7 +4,7 @@ import { filmType } from '../../../types/films'
 
 export const getFilms = createAction('films/getFilms')
 export const addFilm = createAction<filmType>('films/addFilm')
-export const removeFilm = createAction<number>('films/removeFilm')
+export const removeFilm = createAction<string>('films/removeFilm')
 
 const filmsSlice = createSlice({
   name: 'films',
@@ -28,7 +28,7 @@ const filmsSlice = createSlice({
       state.list = [
         ...state.list,
         {
-          id: action.payload.id,
+          _id: action.payload._id,
           title: action.payload.title,
           watched: false,
           tags: [],
@@ -37,10 +37,10 @@ const filmsSlice = createSlice({
     },
     filmRemoved(state, action) {
       state.isLoading = false
-      state.list = state.list.filter(f => f.id !== action.payload)
+      state.list = state.list.filter(f => f._id !== action.payload)
     },
     filmToggled(state, action) {
-      const film = state.list.find(film => film.id === action.payload)
+      const film = state.list.find(film => film._id === action.payload)
       if (film) film.watched = !film.watched // TODO: convert to counter, how many times it was watched
     },
   },

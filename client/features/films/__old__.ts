@@ -9,8 +9,8 @@ import {
   removeFilm,
   filmRemoved,
   filmsError,
-} from './filmsSlice'
-import { fetchAddFilm, fetchFilms, fetchRemoveFilm } from './requests'
+} from './__old__filmsSlice'
+import { fetchAddFilm, fetchFilms, fetchRemoveFilm } from './__old__requests'
 
 function* handleError(e: any) {
   let message

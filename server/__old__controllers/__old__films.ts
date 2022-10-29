@@ -1,12 +1,11 @@
 import { Request, Response } from 'express'
-
 import { filmType } from '../../types/films'
 
-// TODO: move to Mongo DB
+// moved to Mongo DB
 export const tags: string[] = ['Tim', 'iliana', 'Family']
 export let films: filmType[] = [
   {
-    id: 1,
+    _id: '1',
     url: 'google.com',
     title: 'Anime',
     image:
@@ -14,7 +13,7 @@ export let films: filmType[] = [
     tags: ['Tim'],
   },
   {
-    id: 2,
+    _id: '2',
     url: 'google.com',
     title: '1+1',
     image:
@@ -22,7 +21,7 @@ export let films: filmType[] = [
     tags: ['Family'],
   },
   {
-    id: 3,
+    _id: '3',
     url: 'google.com',
     title: 'Titanik',
     image:
@@ -37,7 +36,7 @@ export const getAll = (req: Request, res: Response) => {
 
 export const create = (req: Request, res: Response) => {
   const newFilm = {
-    id: Date.now().toString(),
+    _id: Date.now().toString(),
     ...req.body,
   }
   films.push(newFilm)
@@ -45,6 +44,6 @@ export const create = (req: Request, res: Response) => {
 }
 
 export const remove = (req: Request, res: Response) => {
-  films = films.filter(f => f.id.toString() !== req.params.id)
+  films = films.filter(f => f._id.toString() !== req.params._id)
   res.status(200).json({ message: 'Removed succesfully' })
 }

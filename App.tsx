@@ -4,8 +4,9 @@ import {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack'
 import { StyleSheet, Button, Image } from 'react-native'
-import { QueryClient, QueryClientProvider } from 'react-query'
+// import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 
 import { DetailsScreen } from './client/screens/Details'
 import { HomeScreen } from './client/screens/Home'
@@ -20,12 +21,18 @@ function LogoTitle() {
   )
 }
 
-const queryClient = new QueryClient()
+// const queryClient = new QueryClient()
+const client = new ApolloClient({
+  uri: 'http://localhost:3000/graphql',
+  // uri: process.env.SERVER + '/graphql',
+  cache: new InMemoryCache(),
+});
 
 const Stack = createNativeStackNavigator()
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <ApolloProvider client={client}>
+    {/* <QueryClientProvider client={queryClient}> */}
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator
@@ -60,7 +67,8 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
-    </QueryClientProvider>
+    </ApolloProvider>
+    // </QueryClientProvider>
   )
 }
 

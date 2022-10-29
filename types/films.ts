@@ -1,5 +1,5 @@
 export type filmType = {
-  id: number
+  _id: string
   watched?: boolean
   url?: string
   title: string
@@ -9,6 +9,6 @@ export type filmType = {
 }
 
 export type RootStackParamList = {
-  Home?: { list: { id: number; title: string }[] }
-  Details: { id: number; initialTitle: string }
+  Home?: { list: { _id: string; title: string }[] }
+  Details: { _id: string; initialTitle: string }
 }
